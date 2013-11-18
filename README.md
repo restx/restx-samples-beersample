@@ -1,4 +1,4 @@
 restx-samples-beersample
 ========================
 
-A restx v0.2.7 sample using couchbase as datastore
+A restx (0.2.9.2 and 0.30 compliant) sample using couchbase as datastore

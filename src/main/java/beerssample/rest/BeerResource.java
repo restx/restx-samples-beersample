@@ -1,4 +1,4 @@
-package beerssample.web;
+package beerssample.rest;
 
 import beerssample.domain.Beer;
 import com.couchbase.client.CouchbaseClient;
@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@Component @RestxResource
+@Component
+@RestxResource
 public class BeerResource {
     private final CouchbaseClient couchbase;
     private final ObjectMapper objectMapper;
@@ -44,7 +45,7 @@ public class BeerResource {
             beer.setType("beer");
             beer.setUpdated(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
             if (Strings.isNullOrEmpty(beer.getId())) {
-                beer.setId(UUIDGenerator.generate());
+                beer.setId(UUIDGenerator.DEFAULT.doGenerate());
             }
             couchbase.set(beer.getId(), 0, objectMapper.writeValueAsString(beer));
 
@@ -87,8 +88,8 @@ public class BeerResource {
         try {
             Query query = new Query();
             query.setIncludeDocs(true).setLimit(20)
-                  .setRangeStart(ComplexKey.of(name))
-                  .setRangeEnd(ComplexKey.of(name + "\uefff"));
+                    .setRangeStart(ComplexKey.of(name))
+                    .setRangeEnd(ComplexKey.of(name + "\uefff"));
 
             View view = couchbase.getView("beer", "by_name");
             ViewResponse result = couchbase.query(view, query);
