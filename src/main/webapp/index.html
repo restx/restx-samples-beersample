@@ -1,6 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" ng-app="beerCatApp">
 <head>
     <meta charset="utf-8">
@@ -19,16 +17,17 @@
     <![endif]-->
 </head>
 <body ng-controller="beerListCtrl">
-<div class="container-narrow">
-    <div class="masthead">
-        <ul class="nav nav-pills pull-right">
+
+<section class="container-narrow">
+    <header class="masthead">
+        <nav class="nav nav-pills pull-right">
             <li><a href="/index.html">Home</a></li>
             <li><a href="/beers">Beers</a></li>
             <li><a href="/breweries">Breweries</a></li>
             <li><a href="/all">All</a></li>
-        </ul>
+        </nav>
         <h2 class="muted">Couchbase Beer-Sample</h2>
-    </div>
+    </header>
     <hr>
 
     <h3>AngularJS part ...</h3>
@@ -44,7 +43,7 @@
 
     <hr>
 
-    <div class="row-fluid">
+    <aside class="row-fluid">
         <div class="span12">
             <div class="span6">
                 <div class="span12">
@@ -69,12 +68,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </aside>
     <hr>
-    <div class="footer">
+    <footer class="footer">
         <p>&copy; Couchbase, Inc. 2013</p>
-    </div>
-</div>
+    </footer>
+</section>
 <script src="/statics/js/angularjs-1.2.0.js"></script>
 <script src="/statics/js/controllers.js"></script>
 <script src="/statics/js/jquery.min.js"></script>
