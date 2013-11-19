@@ -23,7 +23,6 @@ public class BeersSampleModule {
     public final static String BEER_DESIGN_DOC_NAME = "beer";
     public final static String BREWERY_DESIGN_DOC_NAME = "brewery";
     public final static String BY_NAME_VIEW_NAME = "by_name";
-    public final static String ALL_WITH_BEERS_VIEW_NAME = "all_with_beers";
 
     @Provides
     public SignatureKey signatureKey() {
@@ -99,4 +98,5 @@ public class BeersSampleModule {
             client.createDesignDoc(designDoc);
         }
     }
+
 }
