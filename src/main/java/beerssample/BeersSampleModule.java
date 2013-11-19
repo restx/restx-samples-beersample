@@ -49,6 +49,7 @@ public class BeersSampleModule {
 
     private void installViews(CouchbaseClient client) {
         installBeerViews(client);
+        installBreweryViews(client);
     }
 
     private void installBeerViews(CouchbaseClient client) {
@@ -66,6 +67,30 @@ public class BeersSampleModule {
             String mapFunction =
                     "function (doc, meta) {\n" +
                             "  if(doc.type && doc.type == \"beer\") {\n" +
+                            "    emit(doc.name);\n" +
+                            "  }\n" +
+                            "}";
+            ViewDesign viewDesign = new ViewDesign(viewName, mapFunction);
+            designDoc.getViews().add(viewDesign);
+            client.createDesignDoc(designDoc);
+        }
+    }
+
+    private void installBreweryViews(CouchbaseClient client) {
+        boolean installView = false;
+        try {
+            client.getView(BEER_DESIGN_DOC_NAME, BY_NAME_VIEW_NAME);
+        } catch (InvalidViewException e) {
+            installView = true;
+        }
+
+        if (installView) {
+            logger.info("Installing Beer views....");
+            DesignDocument designDoc = new DesignDocument(BREWERY_DESIGN_DOC_NAME);
+            String viewName = BY_NAME_VIEW_NAME;
+            String mapFunction =
+                    "function (doc, meta) {\n" +
+                            "  if(doc.type && doc.type == \"brewery\") {\n" +
                             "    emit(doc.name);\n" +
                             "  }\n" +
                             "}";
