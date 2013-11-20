@@ -29,7 +29,7 @@
     </header>
     <hr>
 
-    <h3>AngularJS part ...</h3>
+    <h3>List of {{type}} returned by the Couchbase cluster</h3>
 
     <ul>
         <li ng-repeat="beer in beers">
@@ -60,12 +60,11 @@
                 </div>
                 <div class="span12">
                     <h4>Browse all Beers</h4>
-                    <a href="/api/beers" class="btn btn-warning">Show me all beers by name</a>
+                    <span class="btn btn-info" ng-click="displayAllBeers()"> Get Beers from Serveur </span>
                     <hr/>
                 </div>
                 <div class="span12">
                     <h4>Browse all Breweries</h4>
-                    <a href="/api/breweries" class="btn btn-info">Take me to the breweries</a>
                     <span class="btn btn-info" ng-click="displayAllBreweries()"> Get Breweries from Serveur </span>
                     <hr/>
                 </div>

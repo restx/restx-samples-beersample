@@ -88,7 +88,7 @@ public class BeerResource {
     public Iterable<Beer> findBeersByName() {
         try {
             Query query = new Query();
-            query.setIncludeDocs(true);
+            query.setIncludeDocs(true).setLimit(35);
 
 /*            query.setIncludeDocs(true).setLimit(20)
                     .setRangeStart(ComplexKey.of(name))
@@ -114,7 +114,7 @@ public class BeerResource {
     public Iterable<Brewery> findbreweriesByName() {
         try {
             Query query = new Query();
-            query.setIncludeDocs(true);
+            query.setIncludeDocs(true).setLimit(50);
 
 /*            query.setIncludeDocs(true).setLimit(20)
                     .setRangeStart(ComplexKey.of(name))
