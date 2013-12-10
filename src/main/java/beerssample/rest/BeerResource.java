@@ -23,6 +23,8 @@ import java.util.concurrent.ExecutionException;
 public class BeerResource {
     private final CouchbaseClient couchbase;
     private final ObjectMapper objectMapper;
+    private int beerLimit;
+    private int breweryLimit;
 
     public BeerResource(CouchbaseClient couchbase, ObjectMapper objectMapper) {
         this.couchbase = couchbase;
@@ -86,13 +88,10 @@ public class BeerResource {
 
     @GET("/beers")
     public Iterable<Beer> findBeersByName() {
+        beerLimit = 10;
         try {
             Query query = new Query();
-            query.setIncludeDocs(true).setLimit(35);
-
-/*            query.setIncludeDocs(true).setLimit(20)
-                    .setRangeStart(ComplexKey.of(name))
-                    .setRangeEnd(ComplexKey.of(name + "\uefff"));*/
+            query.setIncludeDocs(true).setLimit(beerLimit);
 
             View view = couchbase.getView("beer", "by_name");
             ViewResponse result = couchbase.query(view, query);
@@ -112,13 +111,10 @@ public class BeerResource {
 
     @GET("/breweries")
     public Iterable<Brewery> findbreweriesByName() {
+        breweryLimit = 5;
         try {
             Query query = new Query();
-            query.setIncludeDocs(true).setLimit(50);
-
-/*            query.setIncludeDocs(true).setLimit(20)
-                    .setRangeStart(ComplexKey.of(name))
-                    .setRangeEnd(ComplexKey.of(name + "\uefff"));*/
+            query.setIncludeDocs(true).setLimit(breweryLimit);
 
             View view = couchbase.getView("brewery", "by_name");
             ViewResponse result = couchbase.query(view, query);
