@@ -1,6 +1,7 @@
-package beerssample.web;
+package beerssample.rest;
 
 import beerssample.domain.Beer;
+import beerssample.domain.Brewery;
 import com.couchbase.client.CouchbaseClient;
 import com.couchbase.client.protocol.views.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@Component @RestxResource
+@Component
+@RestxResource
 public class BeerResource {
     private final CouchbaseClient couchbase;
     private final ObjectMapper objectMapper;
+    private int beerLimit;
+    private int breweryLimit;
 
     public BeerResource(CouchbaseClient couchbase, ObjectMapper objectMapper) {
         this.couchbase = couchbase;
@@ -44,7 +48,7 @@ public class BeerResource {
             beer.setType("beer");
             beer.setUpdated(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
             if (Strings.isNullOrEmpty(beer.getId())) {
-                beer.setId(UUIDGenerator.generate());
+                beer.setId(UUIDGenerator.DEFAULT.doGenerate());
             }
             couchbase.set(beer.getId(), 0, objectMapper.writeValueAsString(beer));
 
@@ -83,12 +87,11 @@ public class BeerResource {
     }
 
     @GET("/beers")
-    public Iterable<Beer> findBeersByName(String name) {
+    public Iterable<Beer> findBeersByName() {
+        beerLimit = 10;
         try {
             Query query = new Query();
-            query.setIncludeDocs(true).setLimit(20)
-                  .setRangeStart(ComplexKey.of(name))
-                  .setRangeEnd(ComplexKey.of(name + "\uefff"));
+            query.setIncludeDocs(true).setLimit(beerLimit);
 
             View view = couchbase.getView("beer", "by_name");
             ViewResponse result = couchbase.query(view, query);
@@ -105,4 +108,28 @@ public class BeerResource {
             throw new RuntimeException(e);
         }
     }
+
+    @GET("/breweries")
+    public Iterable<Brewery> findbreweriesByName() {
+        breweryLimit = 5;
+        try {
+            Query query = new Query();
+            query.setIncludeDocs(true).setLimit(breweryLimit);
+
+            View view = couchbase.getView("brewery", "by_name");
+            ViewResponse result = couchbase.query(view, query);
+
+            List<Brewery> breweries = new ArrayList<>();
+            for (ViewRow row : result) {
+                Brewery brewery = objectMapper.readValue(
+                        (String) row.getDocument(), Brewery.class);
+                brewery.setId(row.getId());
+                breweries.add(brewery);
+            }
+            return breweries;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
